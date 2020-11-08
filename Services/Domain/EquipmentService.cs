@@ -404,6 +404,23 @@ namespace WebApi.Services
                 throw ex;
             }
         }
-
+        public IEnumerable<dynamic> GetEquipmentSelection()
+        {
+            try
+            {
+                return (from em in _context.equipment_model
+                        join eq in _context.equipments on em.id equals eq.equipment_model_id
+                        orderby em.model_name, eq.serial_no
+                        select new
+                        {
+                            id = eq.id,
+                            equipmentName = string.Concat(string.Concat(string.Concat(em.name + " / ", em.model_name), " / "), eq.serial_no)
+                        }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

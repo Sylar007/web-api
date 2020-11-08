@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebApi.Services;
 using WebApi.Entities;
 using WebApi.Models.Users;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers
 {
@@ -130,5 +131,12 @@ namespace WebApi.Controllers
             _userService.Delete(id);
             return Ok();
         }
+        [HttpGet]
+        [Route("/Users/GetAssignSelection")]
+        public string GetAssignSelection()
+        {
+            IEnumerable<object> userSelectionList = _userService.GetAssignSelection();
+            return JsonConvert.SerializeObject(userSelectionList);
+        }        
     }
 }

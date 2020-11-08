@@ -7,6 +7,9 @@ namespace WebApi.Services
 {
     public interface IWorkOrderService
     {
-        dynamic GetPartByWorkOrderNo(string workorderNo);
+        dynamic GetWorkOrderByWorkOrderNo(string workorderNo);
+        IEnumerable<dynamic> GetPartByWorkOrderNo(string workorderNo);
+        IEnumerable<dynamic> GetWorkOrderList();
+        IEnumerable<dynamic> GetWorkOrderSelection();
     }
 }

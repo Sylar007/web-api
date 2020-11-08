@@ -145,5 +145,22 @@ namespace WebApi.Services
 
             return true;
         }
+        public IEnumerable<dynamic> GetAssignSelection()
+        {
+            try
+            {
+                return (from users in _context.Users
+                        orderby users.FirstName
+                        select new
+                        {
+                            id = users.Id,
+                            firstName = users.FirstName
+                        }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -43,6 +43,9 @@ namespace WebApi.Helpers
         public virtual DbSet<part_model> part_model { get; set; }
         public virtual DbSet<policy> policies { get; set; }
         public virtual DbSet<qrcode_link> qrcode_link { get; set; }
+        public virtual DbSet<task> task { get; set; }
+        public virtual DbSet<task_check> task_check { get; set; }
+        public virtual DbSet<task_sub> task_sub { get; set; }        
         public virtual DbSet<wo_type> wo_type { get; set; }
         public virtual DbSet<work_order> work_order { get; set; }
         public virtual DbSet<wo_link> wo_link { get; set; }        

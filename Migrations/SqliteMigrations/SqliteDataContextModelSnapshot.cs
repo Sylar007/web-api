@@ -789,6 +789,108 @@ namespace WebApi.Migrations.SqliteMigrations
                     b.ToTable("qrcode_link");
                 });
 
+            modelBuilder.Entity("WebApi.Entities.task", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("created_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("deleted_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("dt_created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("dt_deleted")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("dt_modified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("equipment_model_id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<sbyte>("is_deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("modified_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("task_no")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("wo_type_id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.ToTable("task");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.task_check", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("created_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("dt_created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("dt_modified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("modified_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("task_id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.ToTable("task_check");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.task_sub", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("created_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("dt_created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("dt_modified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("modified_by")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("task_id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.ToTable("task_sub");
+                });
+
             modelBuilder.Entity("WebApi.Entities.wo_action", b =>
                 {
                     b.Property<int>("id")

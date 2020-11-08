@@ -120,5 +120,13 @@ namespace WebApi.Controllers
 			IEnumerable<object> homeTotalEqProcessChart = _equipmentService.GetHomeTotalEqProcessChart();
 			return JsonConvert.SerializeObject(homeTotalEqProcessChart);
 		}
+
+		[HttpGet]
+		[Route("/Equipment/GetEquipmentSelection")]
+		public string GetEquipmentSelection()
+		{
+			IEnumerable<object> equipmentSelectionList = _equipmentService.GetEquipmentSelection();
+			return JsonConvert.SerializeObject(equipmentSelectionList);
+		}
 	}
 }

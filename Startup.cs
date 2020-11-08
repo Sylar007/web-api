@@ -31,7 +31,8 @@ namespace WebApi
         {
             // use sql server db in production and sqlite db in development
             if (_env.IsProduction())
-                services.AddDbContext<DataContext>();
+                //services.AddDbContext<DataContext>();
+                services.AddDbContext<DataContext, SqliteDataContext>();
             else
                 services.AddDbContext<DataContext, SqliteDataContext>();
 
@@ -83,12 +84,18 @@ namespace WebApi
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IEquipmentFieldService, EquipmentFieldService>();
+            services.AddScoped<IEquipmentFileService, EquipmentFileService>();
+            services.AddScoped<IEquipmentLinkService, EquipmentLinkService>();
+            services.AddScoped<IEquipmentModelFieldService, EquipmentModelFieldService>();
+            services.AddScoped<IEquipmentModelFileService, EquipmentModelFileService>();
+            services.AddScoped<IEquipmentModelLinkService, EquipmentModelLinkService>();            
             services.AddScoped<IPartService, PartService>();
             services.AddScoped<IPartFieldService, PartFieldService>();
             services.AddScoped<IEquipmentPartService, EquipmentPartService>();
             services.AddScoped<IQrLinkService, QrLinkService>();
             services.AddScoped<IWorkOrderService, WorkOrderService>();
-            
+            services.AddScoped<IWOTaskSubService, WOTaskSubService>();
+            services.AddScoped<ITaskSubService, TaskSubService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

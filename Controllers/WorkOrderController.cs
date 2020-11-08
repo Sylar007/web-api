@@ -24,11 +24,35 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("/WorkOrder/GetWorkOrderByWorkOrderNo/{workorderNo}")]
+        public string GetWorkOrderByWorkOrderNo(string workorderNo)
+        {
+            object part = _workorderService.GetWorkOrderByWorkOrderNo(workorderNo);
+            return JsonConvert.SerializeObject(part);
+        }
+
+        [HttpGet]
         [Route("/WorkOrder/GetPartByWorkOrderNo/{workorderNo}")]
         public string GetPartByWorkOrderNo(string workorderNo)
         {
             object part = _workorderService.GetPartByWorkOrderNo(workorderNo);
             return JsonConvert.SerializeObject(part);
+        }
+
+        [HttpGet]
+        [Route("/WorkOrder/GetWorkOrderList")]
+        public string GetWorkOrderList()
+        {
+            IEnumerable<object> workOrderList = _workorderService.GetWorkOrderList();
+            return JsonConvert.SerializeObject(workOrderList);
+        }
+
+        [HttpGet]
+        [Route("/WorkOrder/GetWorkOrderSelection")]
+        public string GetWorkOrderSelection()
+        {
+            IEnumerable<object> workOrderTypeSelectionList = _workorderService.GetWorkOrderSelection();
+            return JsonConvert.SerializeObject(workOrderTypeSelectionList);
         }
     }
 }

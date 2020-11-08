@@ -14,5 +14,6 @@ namespace WebApi.Services
         User Create(User user, string password);
         void Update(User user, string password = null);
         void Delete(int id);
+        IEnumerable<dynamic> GetAssignSelection();
     }
 }
