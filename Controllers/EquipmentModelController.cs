@@ -14,7 +14,7 @@ using WebApi.Services;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
 	[EnableCors()]
 	public class EquipmentModelController : ControllerBase

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.Models.Tasks;
+using WebApi.Entities;
 
 namespace WebApi.Services
 {
-    public interface ITaskSubService
+    public interface IMediaService
     {
-        IList<TaskSubs> GetTaskSubTree(int equipment_id, int wo_type_id);
+        int AddMedia(media data);
     }
 }

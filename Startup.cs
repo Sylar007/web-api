@@ -88,7 +88,8 @@ namespace WebApi
             services.AddScoped<IEquipmentLinkService, EquipmentLinkService>();
             services.AddScoped<IEquipmentModelFieldService, EquipmentModelFieldService>();
             services.AddScoped<IEquipmentModelFileService, EquipmentModelFileService>();
-            services.AddScoped<IEquipmentModelLinkService, EquipmentModelLinkService>();            
+            services.AddScoped<IEquipmentModelLinkService, EquipmentModelLinkService>();
+            services.AddScoped<IEquipmentPartService, EquipmentPartService>();            
             services.AddScoped<IPartService, PartService>();
             services.AddScoped<IPartFieldService, PartFieldService>();
             services.AddScoped<IEquipmentPartService, EquipmentPartService>();
@@ -96,6 +97,9 @@ namespace WebApi
             services.AddScoped<IWorkOrderService, WorkOrderService>();
             services.AddScoped<IWOTaskSubService, WOTaskSubService>();
             services.AddScoped<ITaskSubService, TaskSubService>();
+            services.AddScoped<IWOPriorityService, WOPriorityService>();
+            services.AddScoped<IWOFileService, WOFileService>();
+            services.AddScoped<IMediaService, MediaService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
