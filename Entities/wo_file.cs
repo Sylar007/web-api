@@ -11,5 +11,6 @@ namespace WebApi.Entities
         public int wo_id { get; set; }
         public int media_id { get; set; }
         public string file_type { get; set; }
+        public string content_type { get; set; }
     }
 }

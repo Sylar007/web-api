@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApi.Entities;
 using WebApi.Helpers;
+using WebApi.Models.Tasks;
 
 namespace WebApi.Services
 {
@@ -28,15 +29,40 @@ namespace WebApi.Services
 							where wf.wo_id == woId
 							select new
 							{
-								wf.file_type,
-								m.file_name,
-								wf.id
+								file_type = wf.file_type,
+								file_name = m.file_name,
+								id = m.id
 							}).ToList();
 				}
 				catch (Exception ex)
 				{
 					throw ex;
 				}
+		}
+
+		public FileDownload GetMediaName(int mediaId)
+		{
+			try
+			{
+				var query = (from wf in _context.wo_file
+							  join m in _context.media on wf.media_id equals m.id
+							  where m.id == mediaId
+							  select new
+							  {
+								  wf.file_type,
+								  m.file_name,
+								  wf.content_type
+							  }).FirstOrDefault();
+				FileDownload fileDownload = new FileDownload();
+				fileDownload.name = query.file_name;
+				fileDownload.fileType = query.file_type;
+				fileDownload.contentType = query.content_type;
+				return fileDownload;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 		}
 
 		public int AddWOFile(wo_file fileData)

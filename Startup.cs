@@ -114,7 +114,8 @@ namespace WebApi
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .WithExposedHeaders("Content-Disposition"));  
 
             app.UseAuthentication();
             app.UseAuthorization();

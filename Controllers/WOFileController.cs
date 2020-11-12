@@ -35,6 +35,7 @@ namespace WebApi.Controllers
             _appSettings = appSettings.Value;
         }
 
+        [HttpGet]
         [Route("/WOFile/GetWOFileList/{woId}")]
         public string GetWOFileList(int woId)
         {
@@ -69,8 +70,10 @@ namespace WebApi.Controllers
                 {
                     await model.file.CopyToAsync(stream);
 
-                    string fileName = model.file.FileName;
+                    string fileName = Path.GetFileNameWithoutExtension(model.file.FileName);
                     string path = Path.Combine(filePath, fileName);
+                    var extension = Path.GetExtension(model.file.FileName);
+                    var contentType = model.file.ContentType;
                     media data = new media
                     {
                         file_name = fileName,
@@ -81,8 +84,9 @@ namespace WebApi.Controllers
                     wo_file fileData = new wo_file
                     {
                         media_id = media_id,
-                        file_type = model.fileType,
-                        wo_id = model.woId
+                        file_type = extension,
+                        wo_id = model.woId,
+                        content_type = contentType
                     };
                     _woFileService.AddWOFile(fileData);
                 }
@@ -112,6 +116,22 @@ namespace WebApi.Controllers
             {
                 throw ex;
             }
+        }
+
+        [HttpGet]
+        [Route("/WOFile/DownloadFileFromFileSystem/{id}")]
+        public async Task<IActionResult> DownloadFileFromFileSystem(int id)
+        {
+            FileDownload wOFile = _woFileService.GetMediaName(id);
+            if (wOFile == null) return null;
+            var filePath = _appSettings.MediaPath;
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(Path.Combine(filePath, wOFile.name + wOFile.fileType), FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, wOFile.contentType, wOFile.name + wOFile.fileType);
         }
     }
 }
