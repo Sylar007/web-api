@@ -15,6 +15,23 @@ namespace WebApi.Services
 		{
 			_context = context;
 		}
+		public IEnumerable<dynamic> GetModelSelection()
+		{
+			try
+			{
+				return (from em in _context.equipment_model
+						orderby em.name
+						select new
+						{
+							id = em.id,
+							model_name = string.Concat(em.name + " / ", em.model_name)
+						}).ToList();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 		public IEnumerable<dynamic> GetEquipmentModelList()
 		{
 			try

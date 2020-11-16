@@ -7,7 +7,7 @@ using WebApi.Helpers;
 
 namespace WebApi.Services
 {
-	public class EquipmentStatusService
+	public class EquipmentStatusService : IEquipmentStatusService
 	{
 		private DataContext _context;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Entities;
 
 namespace WebApi.Services
 {
@@ -9,7 +10,10 @@ namespace WebApi.Services
     {
         dynamic GetWorkOrderByWorkOrderNo(string workorderNo);
         IEnumerable<dynamic> GetPartByWorkOrderNo(string workorderNo);
+        dynamic GetEditWorkOrderByWorkOrderNo(string workorderNo);
         IEnumerable<dynamic> GetWorkOrderList();
         IEnumerable<dynamic> GetWorkOrderSelection();
+        int AddWorkOrder(work_order work_order);
+        int EditWorkOrder(work_order data);
     }
 }

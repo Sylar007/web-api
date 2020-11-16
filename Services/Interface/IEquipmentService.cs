@@ -22,5 +22,7 @@ namespace WebApi.Services
         IEnumerable<dynamic> GetHomeTotalEqLocationChart();
         IEnumerable<dynamic> GetHomeTotalEqProcessChart();
         IEnumerable<dynamic> GetEquipmentSelection();
+        dynamic OpenEquipment(string equipment_no);
+        dynamic GetEditEquipmentByEquipmentNo(string equipmentNo);
     }
 }

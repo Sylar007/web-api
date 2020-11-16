@@ -100,6 +100,8 @@ namespace WebApi
             services.AddScoped<IWOPriorityService, WOPriorityService>();
             services.AddScoped<IWOFileService, WOFileService>();
             services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<IEquipmentModelService, EquipmentModelService>();
+            services.AddScoped<IEquipmentStatusService, EquipmentStatusService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

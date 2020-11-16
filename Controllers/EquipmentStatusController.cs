@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebApi.Entities;
-using WebApi.Services.Interface;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
@@ -22,9 +22,8 @@ namespace WebApi.Controllers
 		{
 			_equipmentStatusService = equipmentStatusService;
 		}
-		[HttpPost]
 		[HttpGet]
-		[Route("EquipmentStatus/GetEquipmentStatusList")]
+		[Route("/EquipmentStatus/GetEquipmentStatusList")]
 		public string GetEquipmentStatusList()
 		{
 			IEnumerable<object> equipmentStatusList = _equipmentStatusService.GetEquipmentStatusList();

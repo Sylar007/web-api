@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Entities;
 
-namespace WebApi.Services.Interface
+namespace WebApi.Services
 {
     public interface IEquipmentStatusService
     {
