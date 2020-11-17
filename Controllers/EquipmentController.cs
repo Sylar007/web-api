@@ -31,6 +31,14 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(equipmentList);
         }
 
+        [HttpGet]
+        [Route("/Equipment/GetEquipmentLog/{equipmentId}")]
+        public string GetEquipmentLog(int equipmentId)
+        {
+            IEnumerable<object> equipmentList = _equipmentService.GetEquipmentLog(equipmentId);
+            return JsonConvert.SerializeObject(equipmentList);
+        }        
+
         [Route("Equipment/GetEquipmentLocationList")]
         public string GetEquipmentLocationList()
         {

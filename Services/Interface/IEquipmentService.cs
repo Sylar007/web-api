@@ -24,5 +24,6 @@ namespace WebApi.Services
         IEnumerable<dynamic> GetEquipmentSelection();
         dynamic OpenEquipment(string equipment_no);
         dynamic GetEditEquipmentByEquipmentNo(string equipmentNo);
+        IEnumerable<dynamic> GetEquipmentLog(int equipmentId);
     }
 }

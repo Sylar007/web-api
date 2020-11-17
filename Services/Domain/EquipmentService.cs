@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApi.Entities;
 using WebApi.Helpers;
+using WebApi.Models.Equipment;
 
 namespace WebApi.Services
 {
@@ -36,6 +37,67 @@ namespace WebApi.Services
                             //equipment_name_serial = string.Concat(((eqmj != null) ? eqmj.name : "") + " / ", eq.serial_no),
                             //equipment_model_id = eq.equipment_model_id
                         }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public IEnumerable<dynamic> GetEquipmentLog(int equipmentId)
+        {
+            try
+            {
+                var query = (from wo in _context.work_order
+                             join user in _context.Users on wo.assignee_user_id equals user.Id
+                             join status in _context.wo_status on wo.wo_status_id equals status.id
+                             join type in _context.wo_type on wo.wo_type_id equals type.id
+                             where wo.equipment_id == equipmentId
+                             orderby wo.dt_created descending
+                             select wo).ToList();
+
+                List<EquipmentTimeline> equipmentTimeline = new List<EquipmentTimeline> { };
+                int vCount = 0;
+                string vMonth="";
+                foreach (var cx in query)
+                {
+                    EquipmentTimeline equipment = new EquipmentTimeline();
+                    var statusQuery = (from status in _context.wo_status
+                                       where status.id == cx.wo_status_id
+                                       select status.name).FirstOrDefault();
+                    var statusUser = (from user in _context.Users
+                                      where user.Id == cx.assignee_user_id
+                                      select user.FirstName).FirstOrDefault();
+                    var statusType = (from type in _context.wo_type
+                                      where type.id == cx.wo_type_id
+                                      select type.name).FirstOrDefault();
+
+
+                    equipment.content = @" <br>Assigned to: " + statusUser + @"<br>
+                                               Date: " + cx.dt_created + @"<br>
+                                               Status: " + statusQuery + @"<br>
+                                            ";
+
+                    string vDate = cx.dt_created.Value.Year + "-" + cx.dt_created.Value.Month + "-" + cx.dt_created.Value.Day;
+                    equipment.date = vDate;
+                    equipment.title = statusType + ": " + cx.wo_no;
+                    if (vMonth == cx.dt_created.Value.ToString("MMMM"))
+                    {
+                        vCount = vCount + 1;
+                        vMonth = cx.dt_created.Value.ToString("MMMM");
+                    }
+                    else
+                    {
+                        Title title = new Title();
+                        title.title = cx.dt_created.Value.ToString("MMMM") + "," + cx.dt_created.Value.Year + "|" + vCount + " Entries";
+                        equipment.titles = title;
+                        vCount = 1;
+                        vMonth = cx.dt_created.Value.ToString("MMMM");
+                    }
+                    
+                    equipmentTimeline.Add(equipment);
+                }
+                return equipmentTimeline;
             }
             catch (Exception ex)
             {
@@ -120,12 +182,12 @@ namespace WebApi.Services
                     return new equipment();
                 }
                 return (from eqm in _context.equipments
-                        //join eq in _context.equipment_model on eqm.equipment_model_id equals eq.id into eqJoin
-                        //from eqj in eqJoin.DefaultIfEmpty()
-                        //join es in _context.equipment_status on eqm.equipment_status_id equals es.id into esJoin
-                        //from esj in esJoin.DefaultIfEmpty()
-                        //join p in _context.policies on eqm.equipment_model_id equals p.equipment_model_id into pJoin
-                        //from pj in pJoin.DefaultIfEmpty()
+                            //join eq in _context.equipment_model on eqm.equipment_model_id equals eq.id into eqJoin
+                            //from eqj in eqJoin.DefaultIfEmpty()
+                            //join es in _context.equipment_status on eqm.equipment_status_id equals es.id into esJoin
+                            //from esj in esJoin.DefaultIfEmpty()
+                            //join p in _context.policies on eqm.equipment_model_id equals p.equipment_model_id into pJoin
+                            //from pj in pJoin.DefaultIfEmpty()
                         where eqm.id == id
                         select new
                         {
@@ -280,11 +342,11 @@ namespace WebApi.Services
                             warrantyDate = eqm.dt_warranty_exp,
                             deliveryDate = eqm.dt_site_delivery,
                             installationDate = eqm.dt_installation,
-                            commissioningDate = eqm.dt_commissioning,                            
+                            commissioningDate = eqm.dt_commissioning,
                             sales_name = eqm.sales_contact_name,
                             sales_no = eqm.sales_contact_no,
                             support_name = eqm.support_contact_name,
-                            support_no = eqm.support_contact_no                            
+                            support_no = eqm.support_contact_no
                         }).First();
             }
             catch (Exception ex)
