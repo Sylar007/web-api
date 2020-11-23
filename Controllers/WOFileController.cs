@@ -122,6 +122,25 @@ namespace WebApi.Controllers
         [Route("/WOFile/DownloadFileFromFileSystem/{id}")]
         public async Task<IActionResult> DownloadFileFromFileSystem(int id)
         {
+
+            var idClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase));
+            var deptClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("department", StringComparison.InvariantCultureIgnoreCase));
+            var roleClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("role", StringComparison.InvariantCultureIgnoreCase));
+
+            string vId, vDept, vRole;
+            if (idClaim != null)
+            {
+                vId = idClaim.Value;
+            }
+            if (deptClaim != null)
+            {
+                vDept = idClaim.Value;
+            }
+            if (roleClaim != null)
+            {
+                vRole = idClaim.Value;
+            }
+
             FileDownload wOFile = _woFileService.GetMediaName(id);
             if (wOFile == null) return null;
             var filePath = _appSettings.MediaPath;
@@ -133,5 +152,7 @@ namespace WebApi.Controllers
             memory.Position = 0;
             return File(memory, wOFile.contentType, wOFile.name + wOFile.fileType);
         }
+
+
     }
 }

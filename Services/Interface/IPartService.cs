@@ -8,5 +8,7 @@ namespace WebApi.Services
     public interface IPartService
     {
         dynamic GetPartBySerialNo(string serialNo);
+        IEnumerable<dynamic> GetPartList();
+        dynamic GetPartById(int id);
     }
 }

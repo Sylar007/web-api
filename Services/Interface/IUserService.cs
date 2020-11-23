@@ -15,5 +15,6 @@ namespace WebApi.Services
         void Update(User user, string password = null);
         void Delete(int id);
         IEnumerable<dynamic> GetAssignSelection();
+        bool CanAccess();
     }
 }

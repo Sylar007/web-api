@@ -29,6 +29,23 @@ namespace WebApi.Controllers
 			return JsonConvert.SerializeObject(part);
 		}
 
+		[HttpGet]
+		[Route("/part/GetPartList")]
+		public string GetPartList()
+		{
+			IEnumerable<object> part = _partService.GetPartList();
+			return JsonConvert.SerializeObject(part);
+		}
+
+		[HttpGet]
+		[Route("/Part/GetPartById/{id}")]
+		public string GetPartById(int id)
+		{
+			object part = _partService.GetPartById(id);
+			return JsonConvert.SerializeObject(part);
+		}
+		
+
 		//[HttpPost]
 		//[Route("/Equipment/GetEquipmentById/{id}")]
 		//public string GetEquipmentById(int id)

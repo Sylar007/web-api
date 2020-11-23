@@ -162,5 +162,18 @@ namespace WebApi.Services
                 throw ex;
             }
         }
+
+        public bool CanAccess()
+        {
+            try
+            {
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return false;
+        }
     }
 }

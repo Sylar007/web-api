@@ -34,6 +34,8 @@ namespace WebApi.Services
                             wo_name = workorder.wo_name,
                             wo_no = workorder.wo_no,
                             wo_ordertype = wo_type.type_desc,
+                            wo_type_id = wo_type.id,
+                            equipment_id = equipment.id,
                             equipment_serialno = equipment.serial_no,
                             equipment_model = equipment_model.model_name,
                             action_taken = workorder.action_taken,

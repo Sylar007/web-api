@@ -27,7 +27,7 @@ namespace WebApi.Controllers
 		[Route("/TaskSub/GetTaskSubTree")]
 		public string GetTaskSubTree([FromBody]TaskSubModel model)
 		{
-			dynamic val = _tasksubService.GetTaskSubTree(Convert.ToInt32(model.equipmentid), Convert.ToInt32(model.wotypeid));
+			dynamic val = _tasksubService.GetTaskSubTree(model.equipmentid, model.wotypeid);
 			return JsonConvert.SerializeObject(val);
 		}
 	}
