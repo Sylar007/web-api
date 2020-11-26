@@ -8,6 +8,6 @@ namespace WebApi.Services
 {
     public interface ITaskSubService
     {
-        IList<TaskSubs> GetTaskSubTree(int equipment_id, int wo_type_id);
+        IList<TaskSubs> GetTaskSubTree(int woid, int equipment_id, int wo_type_id);
     }
 }

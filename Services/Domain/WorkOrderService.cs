@@ -26,6 +26,10 @@ namespace WebApi.Services
                         join equipment_model in _context.equipment_model on equipment.equipment_model_id equals equipment_model.id
                         join wo_status in _context.wo_status on workorder.wo_status_id equals wo_status.id
                         join User in _context.Users on workorder.assignee_user_id equals User.Id
+                        join period in _context.period on workorder.freq_period_id equals period.id into periods
+                        from freqPeriod in periods.DefaultIfEmpty()
+                        join periodRemind in _context.period on workorder.reminder_period_id equals periodRemind.id into rPeriods
+                        from reminderPeriod in rPeriods.DefaultIfEmpty()
                         where workorder.wo_no == workorderNo
                         select new
                         {
@@ -41,7 +45,16 @@ namespace WebApi.Services
                             action_taken = workorder.action_taken,
                             assign_to = User.FirstName,
                             status = wo_status.name,
-                            equipment_name = equipment_model.name
+                            equipment_name = equipment_model.name,
+                            remarks = workorder.remarks,
+                            frequency = freqPeriod.name,
+                            frequency_total = workorder.freq_total,
+                            remindBefore = reminderPeriod.name,
+                            remindBefore_total = workorder.reminder_total,
+                            plannedExecutionDateFrom = workorder.dt_start_planned,
+                            plannedExecutionDateTo = workorder.dt_end_planned,
+                            actualExecutionDateFrom = workorder.dt_start_actual,
+                            actualExecutionDateTo = workorder.dt_end_actual
                         }).First();
             }
             catch (Exception ex)
@@ -130,8 +143,8 @@ namespace WebApi.Services
                             equipmentName = string.Concat(string.Concat(string.Concat(string.Concat(string.Concat(((e != null) ? e.equipment_no : "") + " : ", (eqm != null) ? eqm.name : ""), " / "), (eqm != null) ? eqm.model_name : ""), " / "), (e != null) ? e.serial_no : ""),
                             plannedStartDate = ((w.dt_start_planned != null) ? w.dt_start_planned : DateTime.MinValue),
                             plannedEndDate = ((w.dt_end_planned != null) ? w.dt_end_planned : DateTime.MinValue),
-                            startDate = ((w.dt_start_actual != null) ? w.dt_start_actual : DateTime.MinValue),
-                            completedDate = ((w.dt_end_actual != null) ? w.dt_end_actual : DateTime.MinValue),
+                            startDate = ((w.dt_start_actual != null) ? w.dt_start_actual : null),
+                            completedDate = ((w.dt_end_actual != null) ? w.dt_end_actual : null),
                             status = ((ws != null) ? ws.name : ""),
                             location = ((e != null) ? e.location : "")
                         }).ToList();
@@ -166,6 +179,7 @@ namespace WebApi.Services
                 data.is_deleted = 0;
                 data.dt_created = DateTime.Now;
                 data.wo_action_id = 1;
+                data.wo_status_id = 7;
 
                 int? num = (from w in _context.work_order
                             where w.is_deleted == 0 && w.dt_start_planned.Year == data.dt_start_planned.Year && w.dt_start_planned.Month == data.dt_start_planned.Month && w.dt_start_planned.Day == data.dt_start_planned.Day

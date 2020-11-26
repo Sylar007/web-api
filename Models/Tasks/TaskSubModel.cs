@@ -9,6 +9,8 @@ namespace WebApi.Models.Tasks
     public class TaskSubModel
     {
         [Required]
+        public int woid { get; set; }
+        [Required]
         public int equipmentid { get; set; }
 
         [Required]
