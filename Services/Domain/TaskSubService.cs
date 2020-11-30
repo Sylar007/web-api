@@ -61,6 +61,7 @@ namespace WebApi.Services
                                      }).FirstOrDefault();
 
                         children subtasksingle = new children();
+                        List<value> values = new List<value>();
                         if (query3 != null)
                         {
                             if (query3.wo_id == woid)
@@ -72,15 +73,37 @@ namespace WebApi.Services
                             {
                                 subtasksingle.text = children.subtaskName + "  (Sub Task ini telah dilaksana dari " + query3.wo_no + " pada " + query3.wo_date_created.Value.ToString("dd/MM/yyyy") + ")";
                                 subtasksingle.disabled = true;
-                            }                           
+                            }
+                            value subtasksingleValue = new value();
+                            subtasksingleValue.id = children.id.ToString();
+                            //onclick = "window.open('WOExUpload?type=WOExPre&tasksubid=158&woid=150', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false"
+                            //subtasksingleValue.url = "&emsp;<button type='button' data-toggle='modal' onclick='this.modalSubTaskFile.show()'>Before (0)</button>";
+                            //subtasksingleValue.url = "&emsp;<a role='button' style='cursor: pointer; color: blue' data-toggle='modal' 'aria-hidden='true' onclick='window.open('/workorder/workordersubtaskfile;wo_id=6', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false'>Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+                            subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=" + query3.wo_id + "' style='cursor: pointer; color: blue' target = '_blank' >Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+
+                            //subtasksingleValue.url = "&emsp;<a style='cursor: pointer; color: blue' onclick='window.open('workorder/workordersubtaskfile;wo_id=6', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false' target = '_blank' >Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+                            //subtasksingleValue.url= "&emsp;<a href = 'http://www.yahoo.com' target = '_blank'>Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+                            values.Add(subtasksingleValue);
+                            subtasksingle.value = values;
                         }
                         else
                         {
                             subtasksingle.text = children.subtaskName;
                             subtasksingle.disabled = false;
+                            value subtasksingleValue = new value();
+                            subtasksingleValue.id = children.id.ToString();
+                            //onclick = "window.open('WOExUpload?type=WOExPre&tasksubid=158&woid=150', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false"
+                            //subtasksingleValue.url = "&emsp;<button type='button' data-toggle='modal' onclick='this.modalSubTaskFile.show()'>Before (0)</button>";
+                            //subtasksingleValue.url = "&emsp;<a role='button' style='cursor: pointer; color: blue' data-toggle='modal' 'aria-hidden='true' onclick='window.open('/workorder/workordersubtaskfile;wo_id=6', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false'>Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+                            subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=-1 style='cursor: pointer; color: blue' target = '_blank' >Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+
+                            //subtasksingleValue.url = "&emsp;<a style='cursor: pointer; color: blue' onclick='window.open('workorder/workordersubtaskfile;wo_id=6', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false' target = '_blank' >Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+                            //subtasksingleValue.url= "&emsp;<a href = 'http://www.yahoo.com' target = '_blank'>Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
+                            values.Add(subtasksingleValue);
+                            subtasksingle.value = values;
                         }
                         
-                        subtasksingle.value = children.id.ToString();
+                        //subtasksingle.value = children.id.ToString();
                         subtasksingle.@checked = true;
                         childrens.Add(subtasksingle);
                     }

@@ -33,7 +33,7 @@ namespace WebApi.Entities
         public string latitude { get; set; }
         public decimal horsepower { get; set; }
         public int equipment_status_id { get; set; }
-        public virtual equipment_status equipment_status { get; set; }
+       // public virtual equipment_status equipment_status { get; set; }
         public int media_id { get; set; }
         public sbyte is_deleted { get; set; }
         public Nullable<System.DateTime> dt_deleted { get; set; }

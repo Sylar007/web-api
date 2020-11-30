@@ -8,7 +8,7 @@ namespace WebApi.Services
 {
     public interface IEquipmentFileService
     {
-        IEnumerable<dynamic> GetEquipmentFileList(int equipmentId, string fileType);
+        IEnumerable<dynamic> GetFileList(int equipmentId); 
         int AddEquipmentFile(equipment_file fileData);
         bool DeleteEquipmentFile(int[] equipmentFileIds);
     }

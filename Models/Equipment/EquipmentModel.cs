@@ -17,7 +17,7 @@ namespace WebApi.Models.Equipment
         [Required]
         public string serial_no { get; set; }
  
-        public string manufacture_year { get; set; }
+        public int manufacture_year { get; set; }
         [Required]
         public string acquisitionDate { get; set; }
 

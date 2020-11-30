@@ -7,6 +7,13 @@ using WebApi.Services;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
+using System.Net.Http;
+using WebApi.Models.Tasks;
+using System.IO;
+using WebApi.Entities;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
@@ -17,46 +24,65 @@ namespace WebApi.Controllers
 	public class EquipmentFileController : ControllerBase
     {
 		private IEquipmentFileService _equipmentFileService;
+		private IMediaService _mediaService;
+		private readonly AppSettings _appSettings;
 
 		public EquipmentFileController(
-			IEquipmentFileService equipmentFileService)
+			IEquipmentFileService equipmentFileService, IMediaService mediaService, IOptions<AppSettings> appSettings)
 		{
 			_equipmentFileService = equipmentFileService;
+			_mediaService = mediaService;
+			_appSettings = appSettings.Value;
 		}
-		[HttpPost]
+
 		[HttpGet]
-		[Route("EquipmentFile/GetEquipmentFileList/{equipmentId}")]
-		public string GetEquipmentFileList(int equipmentId)
+		[Route("/EquipmentFile/GetFileList/{equipmentId}")]
+		public string GetFileList(int equipmentId)
 		{
-			IEnumerable<object> equipmentFileList = _equipmentFileService.GetEquipmentFileList(equipmentId, "Equipment");
+			IEnumerable<object> equipmentFileList = _equipmentFileService.GetFileList(equipmentId);
 			return JsonConvert.SerializeObject(equipmentFileList);
 		}
 
-		//[HttpPost("UploadFiles")]
-		//[Route("EquipmentFile/UploadFiles")]
-		//public async Task<IActionResult> UploadFiles(List<IFormFile> files)
-		//{
-		//	long size = files.Sum(f => f.Length);
+		[DisableRequestSizeLimit]
+		[HttpPost]
+		[Route("/EquipmentFile/UploadFiles")]
+		public async Task<HttpResponseMessage> UploadFilesAsync([FromForm]FileData model)
+		{
+			try
+			{
 
-		//	// full path to file in temp location
-		//	var filePath = Path.GetTempFileName();
+				var filePath = _appSettings.MediaPath;
 
-		//	foreach (var formFile in files)
-		//	{
-		//		if (formFile.Length > 0)
-		//		{
-		//			using (var stream = new FileStream(filePath, FileMode.Create))
-		//			{
-		//				await formFile.CopyToAsync(stream);
-		//			}
-		//		}
-		//	}
+				using (var stream = new FileStream(Path.Combine(filePath, model.file.FileName), FileMode.Create))
+				{
+					await model.file.CopyToAsync(stream);
 
-		//	// process uploaded files
-		//	// Don't rely on or trust the FileName property without validation.
-
-		//	return Ok(new { count = files.Count, size, filePath });
-		//}
+					string fileName = Path.GetFileNameWithoutExtension(model.file.FileName);
+					string path = Path.Combine(filePath, fileName);
+					var extension = Path.GetExtension(model.file.FileName);
+					var contentType = model.file.ContentType;
+					media data = new media
+					{
+						file_name = fileName,
+						dt_created = DateTime.Now,
+						created_by = 1//UserService.GetLoggedInUserId(base.Request)
+					};
+					int media_id = _mediaService.AddMedia(data);
+					equipment_file fileData = new equipment_file
+					{
+						media_id = media_id,
+						file_type = extension,
+						equipment_id = model.id
+					};
+					_equipmentFileService.AddEquipmentFile(fileData);
+				}
+			}
+			catch (Exception arg)
+			{
+				return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+			}
+			return new HttpResponseMessage(HttpStatusCode.OK);
+		}
 
 		//[HttpPost]
 		//[Route("EquipmentFile/UploadFiles")]

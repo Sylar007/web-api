@@ -111,10 +111,26 @@ namespace WebApi.Controllers
             {
                 // create work equipment
                 equipment equipment = new equipment();
-                equipment.dt_acquisition = Convert.ToDateTime(model.acquisitionDate);
-                equipment.dt_commissioning = Convert.ToDateTime(model.commissioningDate);
-                equipment.dt_site_delivery = Convert.ToDateTime(model.deliveryDate);
-                equipment.dt_installation = Convert.ToDateTime(model.installationDate);
+                if (!string.IsNullOrWhiteSpace(model.acquisitionDate))
+                {
+                    equipment.dt_acquisition = Convert.ToDateTime(model.acquisitionDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.commissioningDate))
+                {
+                    equipment.dt_commissioning = Convert.ToDateTime(model.commissioningDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.deliveryDate))
+                {
+                    equipment.dt_site_delivery = Convert.ToDateTime(model.deliveryDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.installationDate))
+                {
+                    equipment.dt_installation = Convert.ToDateTime(model.installationDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.warrantyDate))
+                {
+                    equipment.dt_warranty_exp = Convert.ToDateTime(model.warrantyDate);
+                }
                 equipment.mfg_year = Convert.ToInt32(model.manufacture_year);
                 equipment.equipment_model_id = model.model_id;
                 equipment.sales_contact_name = model.sales_name;
@@ -142,10 +158,26 @@ namespace WebApi.Controllers
             {
                 // update equipment
                 equipment equipment = new equipment();
-                equipment.dt_acquisition = Convert.ToDateTime(model.acquisitionDate);
-                equipment.dt_commissioning = Convert.ToDateTime(model.commissioningDate);
-                equipment.dt_site_delivery = Convert.ToDateTime(model.deliveryDate);
-                equipment.dt_installation = Convert.ToDateTime(model.installationDate);
+                if (!string.IsNullOrWhiteSpace(model.acquisitionDate))
+                {
+                    equipment.dt_acquisition = Convert.ToDateTime(model.acquisitionDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.commissioningDate))
+                {
+                    equipment.dt_commissioning = Convert.ToDateTime(model.commissioningDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.deliveryDate))
+                {
+                    equipment.dt_site_delivery = Convert.ToDateTime(model.deliveryDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.installationDate))
+                {
+                    equipment.dt_installation = Convert.ToDateTime(model.installationDate);
+                }
+                if (!string.IsNullOrWhiteSpace(model.warrantyDate))
+                {
+                    equipment.dt_warranty_exp = Convert.ToDateTime(model.warrantyDate);
+                }
                 equipment.mfg_year = Convert.ToInt32(model.manufacture_year);
                 equipment.equipment_model_id = model.model_id;
                 equipment.sales_contact_name = model.sales_name;
@@ -154,6 +186,7 @@ namespace WebApi.Controllers
                 equipment.equipment_status_id = model.status_id;
                 equipment.support_contact_name = model.support_name;
                 equipment.support_contact_no = model.support_no;
+                equipment.id = model.id;
 
                 int equipment_id = _equipmentService.EditEquipment(equipment);
                 return equipment_id;

@@ -17,34 +17,23 @@ namespace WebApi.Services
 		{
 			_context = context;
 		}
-		public IEnumerable<dynamic> GetEquipmentFileList(int equipmentId, string fileType)
+		public IEnumerable<dynamic> GetFileList(int equipmentId)
 		{
 			try
 			{
-				try
-				{
-					if (equipmentId == 0)
-					{
-						return new List<equipment_file>();
-					}
-					return (from ef in _context.equipment_file
-							join m in _context.media on ef.media_id equals m.id
-							where ef.equipment_id == equipmentId && ef.file_type == fileType
-							select new
-							{
-								ef.file_type,
-								m.file_name,
-								ef.id
-							}).ToList();
-				}
-				catch (Exception ex)
-				{
-					throw ex;
-				}
+				return (from ef in _context.equipment_file
+						join m in _context.media on ef.media_id equals m.id
+						where ef.equipment_id == equipmentId
+						select new
+						{
+							file_type = ef.file_type,
+							file_name = m.file_name,
+							id = m.id
+						}).ToList();
 			}
-			catch (Exception ex2)
+			catch (Exception ex)
 			{
-				throw ex2;
+				throw ex;
 			}
 		}
 

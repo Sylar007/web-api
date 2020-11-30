@@ -462,7 +462,8 @@ namespace WebApi.Services
         {
             try
             {
-                equipment equipment = _context.equipments.Where((equipment em) => em.id == data.id).First();
+
+                equipment equipment = _context.equipments.Where(x => x.id == data.id).First();
                 equipment.equipment_model_id = data.equipment_model_id;
                 equipment.serial_no = data.serial_no;
                 equipment.mfg_year = data.mfg_year;

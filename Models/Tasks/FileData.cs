@@ -12,9 +12,8 @@ namespace WebApi.Models.Tasks
         [Required]
         public IFormFile file { get; set; }
         [Required]
-        public int woId { get; set; }
-
-        [Required]
+        public int id { get; set; }
+        
         public string fileType { get; set; }
     }
 }

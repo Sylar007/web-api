@@ -85,7 +85,7 @@ namespace WebApi.Controllers
                     {
                         media_id = media_id,
                         file_type = extension,
-                        wo_id = model.woId,
+                        wo_id = model.id,
                         content_type = contentType
                     };
                     _woFileService.AddWOFile(fileData);
