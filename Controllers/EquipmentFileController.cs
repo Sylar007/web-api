@@ -14,6 +14,7 @@ using WebApi.Entities;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -61,18 +62,21 @@ namespace WebApi.Controllers
 					string path = Path.Combine(filePath, fileName);
 					var extension = Path.GetExtension(model.file.FileName);
 					var contentType = model.file.ContentType;
+					int idClaim = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase)).Value);
+
 					media data = new media
 					{
 						file_name = fileName,
 						dt_created = DateTime.Now,
-						created_by = 1//UserService.GetLoggedInUserId(base.Request)
+						created_by = idClaim
 					};
 					int media_id = _mediaService.AddMedia(data);
 					equipment_file fileData = new equipment_file
 					{
 						media_id = media_id,
 						file_type = extension,
-						equipment_id = model.id
+						equipment_id = model.id,
+						content_type = contentType
 					};
 					_equipmentFileService.AddEquipmentFile(fileData);
 				}
@@ -84,72 +88,39 @@ namespace WebApi.Controllers
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
 
-		//[HttpPost]
-		//[Route("EquipmentFile/UploadFiles")]
-		//public JsonResult<string> UploadFiles(int equipmentId, string fileType)
-		//{
-		//	try
-		//	{
-		//		foreach (string file in HttpContext.Current.Request.Files)
-		//		{
-		//			HttpPostedFile httpPostedFile = HttpContext.Current.Request.Files[file];
-		//			if (httpPostedFile != null && httpPostedFile.ContentLength > 0)
-		//			{
-		//				Stream inputStream = httpPostedFile.InputStream;
-		//				string fileName = httpPostedFile.FileName;
-		//				string text = WebConfigurationManager.AppSettings["MediaPath"] + fileType;
-		//				if (!Directory.Exists(text))
-		//				{
-		//					Directory.CreateDirectory(text);
-		//				}
-		//				string path = Path.Combine(text, fileName);
-		//				using (FileStream destination = File.Create(path))
-		//				{
-		//					inputStream.CopyTo(destination);
-		//				}
-		//				medium data = new medium
-		//				{
-		//					file_name = fileName,
-		//					dt_created = DateTime.Now,
-		//					created_by = 1
-		//				};
-		//				MediaService mediaService = new MediaService();
-		//				int media_id = mediaService.AddMedia(data);
-		//				equipment_file fileData = new equipment_file
-		//				{
-		//					media_id = media_id,
-		//					file_type = fileType,
-		//					equipment_id = equipmentId
-		//				};
-		//				_equipmentFileService.AddEquipmentFile(fileData);
-		//			}
-		//		}
-		//	}
-		//	catch (Exception arg)
-		//	{
-		//		return Json("Upload failed " + arg);
-		//	}
-		//	return Json("File uploaded successfully");
-		//}
+		[HttpGet]
+		[Route("/EquipmentFile/DownloadFileFromFileSystem/{id}")]
+		public async Task<IActionResult> DownloadFileFromFileSystem(int id)
+		{
 
-		//[HttpPost]
-		//[Route("EquipmentFile/DeleteFiles")]
-		//public bool DeleteFiles(dynamic equipmentFileDto)
-		//{
-		//	try
-		//	{
-		//		string[] array = Convert.ToString(equipmentFileDto.dataList).Split(new char[1]
-		//		{
-		//		','
-		//		});
-		//		int[] equipmentFileIds = Array.ConvertAll(array, (string s) => int.Parse(s));
-		//		EquipmentFileService equipmentFileService = new EquipmentFileService();
-		//		return equipmentFileService.DeleteEquipmentFile(equipmentFileIds);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		throw ex;
-		//	}
-		//}
+			var idClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase));
+			var deptClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("department", StringComparison.InvariantCultureIgnoreCase));
+			var roleClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("role", StringComparison.InvariantCultureIgnoreCase));
+
+			string vId, vDept, vRole;
+			if (idClaim != null)
+			{
+				vId = idClaim.Value;
+			}
+			if (deptClaim != null)
+			{
+				vDept = idClaim.Value;
+			}
+			if (roleClaim != null)
+			{
+				vRole = idClaim.Value;
+			}
+
+			FileDownload equipmentFile = _equipmentFileService.GetMediaName(id);
+			if (equipmentFile == null) return null;
+			var filePath = _appSettings.MediaPath;
+			var memory = new MemoryStream();
+			using (var stream = new FileStream(Path.Combine(filePath, equipmentFile.name + equipmentFile.fileType), FileMode.Open))
+			{
+				await stream.CopyToAsync(memory);
+			}
+			memory.Position = 0;
+			return File(memory, equipmentFile.contentType, equipmentFile.name + equipmentFile.fileType);
+		}
 	}
 }

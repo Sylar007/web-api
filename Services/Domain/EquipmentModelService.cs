@@ -32,6 +32,24 @@ namespace WebApi.Services
 				throw ex;
 			}
 		}
+		public dynamic GetModelSelectionById(int id)
+		{
+			try
+			{
+				return (from em in _context.equipment_model
+						where em.id == id
+						orderby em.name
+						select new
+						{
+							id = em.id,
+							model_name = string.Concat(em.name + " / ", em.model_name)
+						}).FirstOrDefault();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 		public IEnumerable<dynamic> GetEquipmentModelList()
 		{
 			try

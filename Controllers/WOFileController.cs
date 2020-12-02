@@ -74,11 +74,13 @@ namespace WebApi.Controllers
                     string path = Path.Combine(filePath, fileName);
                     var extension = Path.GetExtension(model.file.FileName);
                     var contentType = model.file.ContentType;
+                    int idClaim = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase)).Value);
+
                     media data = new media
                     {
                         file_name = fileName,
                         dt_created = DateTime.Now,
-                        created_by = 1//UserService.GetLoggedInUserId(base.Request)
+                        created_by = idClaim
                     };
                     int media_id = _mediaService.AddMedia(data);
                     wo_file fileData = new wo_file

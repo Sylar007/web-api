@@ -15,5 +15,6 @@ namespace WebApi.Services
         int EditEquipmentModel(equipment_model data);
         IEnumerable<dynamic> GetTotalEquipmentModel();
         IEnumerable<dynamic> GetModelSelection();
+        dynamic GetModelSelectionById(int id);
     }
 }

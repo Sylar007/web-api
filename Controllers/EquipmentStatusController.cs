@@ -30,7 +30,7 @@ namespace WebApi.Controllers
 			return JsonConvert.SerializeObject(equipmentStatusList);
 		}
 
-		[Route("EquipmentStatus/GetEquipmentStatusById/{id}")]
+		[Route("/EquipmentStatus/GetEquipmentStatusById/{id}")]
 		public string GetEquipmentStatusById(int id)
 		{
 			equipment_status equipmentStatusById = _equipmentStatusService.GetEquipmentStatusById(id);

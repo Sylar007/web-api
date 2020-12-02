@@ -33,6 +33,13 @@ namespace WebApi.Controllers
 			IEnumerable<object> equipmentModelList = _equipmentModelService.GetModelSelection();
 			return JsonConvert.SerializeObject(equipmentModelList);
 		}
+		[HttpGet]
+		[Route("/EquipmentModel/GetModelSelectionById/{id}")]
+		public string GetModelSelectionById(int id)
+		{
+			object equipmentModel = _equipmentModelService.GetModelSelectionById(id);
+			return JsonConvert.SerializeObject(equipmentModel);
+		}
 		[HttpPost]
 		[HttpGet]
 		[Route("EquipmentModel/GetEquipmentModelList")]
