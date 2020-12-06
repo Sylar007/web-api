@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebApi.Entities;
+using WebApi.Models.Equipment;
 using WebApi.Services;
 
 namespace WebApi.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class EquipmentTypeController : ControllerBase
+	[Authorize]
+	[ApiController]
+	[Route("[controller]")]
+	public class EquipmentTypeController : ControllerBase
     {
 		private IEquipmentTypeService _equipmentTypeService;
 		public EquipmentTypeController(
@@ -20,16 +23,15 @@ namespace WebApi.Controllers
 		{
 			_equipmentTypeService = equipmentTypeService;
 		}
-		[HttpPost]
 		[HttpGet]
-		[Route("EquipmentType/GetEquipmentTypeList")]
+		[Route("/EquipmentType/GetEquipmentTypeList")]
 		public string GetEquipmentTypeList()
 		{
 			IEnumerable<object> equipmentTypeList = _equipmentTypeService.GetEquipmentTypeList();
 			return JsonConvert.SerializeObject(equipmentTypeList);
 		}
-
-		[Route("EquipmentType/GetEquipmentTypeById/{id}")]
+		[HttpGet]
+		[Route("/EquipmentType/GetEquipmentTypeById/{id}")]
 		public string GetEquipmentById(int id)
 		{
 			equipment_type equipmentTypeById = _equipmentTypeService.GetEquipmentTypeById(id);
@@ -37,21 +39,32 @@ namespace WebApi.Controllers
 		}
 
 		[HttpPost]
-		[Route("EquipmentType/AddEquipmentType")]
-		public int AddEquipmentType([FromBody] equipment_type equipmenttype)
+		[Route("/EquipmentType/AddEquipmentType")]
+		public int AddEquipmentType([FromBody] EquipmentType_Model equipmenttype)
 		{
-			equipmenttype.dt_created = DateTime.Now;
-			//equipmenttype.created_by = UserService.GetLoggedInUserId(base.Request);
-			return _equipmentTypeService.AddEquipmentType(equipmenttype);
+			equipment_type equipment_type = new equipment_type();
+			equipment_type.name = equipmenttype.name;
+			equipment_type.description = equipmenttype.description;
+			equipment_type.dt_created = DateTime.Now;
+			equipment_type.dt_modified = DateTime.Now;
+			int idClaim = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase)).Value);
+			equipment_type.created_by = idClaim;
+			equipment_type.modified_by = idClaim;
+			return _equipmentTypeService.AddEquipmentType(equipment_type);
 		}
 
 		[HttpPost]
-		[Route("EquipmentType/EditEquipmentType")]
-		public int EditEquipmentType([FromBody] equipment_type equipmenttype)
+		[Route("/EquipmentType/UpdateEquipmentType")]
+		public int UpdateEquipmentType([FromBody] EquipmentType_Model equipmenttype)
 		{
-			equipmenttype.dt_modified = DateTime.Now;
-			//equipmenttype.modified_by = UserService.GetLoggedInUserId(base.Request);
-			return _equipmentTypeService.EditEquipmentType(equipmenttype);
+			equipment_type equipment_type = new equipment_type();
+			equipment_type.id = equipmenttype.id;
+			equipment_type.name = equipmenttype.name;
+			equipment_type.description = equipmenttype.description;
+			equipment_type.dt_modified = DateTime.Now;
+			int idClaim = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase)).Value);
+			equipment_type.modified_by = idClaim; ;
+			return _equipmentTypeService.EditEquipmentType(equipment_type);
 		}
 	}
 }

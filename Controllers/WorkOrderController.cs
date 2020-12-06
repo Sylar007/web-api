@@ -122,5 +122,32 @@ namespace WebApi.Controllers
                 return 0;
             }
         }
+
+        [HttpPost]
+        [Route("/WorkOrder/UpdateTaskSubTree/{woid}")]
+        public bool UpdateTaskSubTree(int woid,[FromBody]List<EventModel> model)
+        {
+            try
+            {
+                //// update work order
+                //work_order work_order = new work_order();
+                //work_order.id = model.id;
+                //work_order.assignee_user_id = model.asignee_user_id;
+                //work_order.wo_type_id = model.wo_type_id;
+                //work_order.equipment_id = model.equipment_id;
+                //work_order.wo_name = model.wo_name;
+                //work_order.wo_priority_id = model.wo_priority_id;
+                //work_order.dt_start_planned = Convert.ToDateTime(model.dt_start_planned);
+                //work_order.dt_end_planned = Convert.ToDateTime(model.dt_end_planned);
+                //work_order.remarks = model.remarks;
+                
+                return _workorderService.EditSubTaskTree(woid, model); ;
+            }
+            catch (Exception ex)
+            {
+                // return error message if there was an exception
+                return false;
+            }
+        }
     }
 }

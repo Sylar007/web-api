@@ -40,7 +40,11 @@ namespace WebApi.Helpers
         public virtual DbSet<part_field> part_field { get; set; }
         public virtual DbSet<part_file> part_file { get; set; }
         public virtual DbSet<part_link> part_link { get; set; }
+        public virtual DbSet<part_type> part_type { get; set; }
         public virtual DbSet<part_model> part_model { get; set; }
+        public virtual DbSet<part_model_link> part_model_link { get; set; }        
+        public virtual DbSet<part_model_field> part_model_field { get; set; }
+        public virtual DbSet<part_model_file> part_model_file { get; set; }        
         public virtual DbSet<policy> policies { get; set; }
         public virtual DbSet<qrcode_link> qrcode_link { get; set; }
         public virtual DbSet<task> task { get; set; }

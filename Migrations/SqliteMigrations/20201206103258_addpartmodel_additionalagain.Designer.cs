@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
 namespace WebApi.Migrations.SqliteMigrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    partial class SqliteDataContextModelSnapshot : ModelSnapshot
+    [Migration("20201206103258_addpartmodel_additionalagain")]
+    partial class addpartmodel_additionalagain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -822,10 +824,10 @@ namespace WebApi.Migrations.SqliteMigrations
                     b.Property<DateTime>("dt_created")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("dt_modified")
+                    b.Property<DateTime>("dt_modified")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("modified_by")
+                    b.Property<int>("modified_by")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("name")

@@ -43,6 +43,7 @@ namespace WebApi.Controllers
 		[Route("/EquipmentField/CreateEquipmentField")]
 		public bool CreateEquipmentField([FromBody]equipment_field equipmentField)
 		{
+			equipmentField.field_type = "Spec";
 			bool createOperation = _equipmentFieldService.CreateEquipmentField(equipmentField);
 			return createOperation;
 		}
@@ -51,6 +52,7 @@ namespace WebApi.Controllers
 		[Route("/EquipmentField/UpdateEquipmentField")]
 		public bool UpdateEquipmentField(equipment_field equipmentField)
 		{
+			equipmentField.field_type = "Spec";
 			bool updateOperation = _equipmentFieldService.UpdateEquipmentField(equipmentField);
 			return updateOperation;
 		}

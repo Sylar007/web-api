@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
 namespace WebApi.Migrations.SqliteMigrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    partial class SqliteDataContextModelSnapshot : ModelSnapshot
+    [Migration("20201206095403_addpartmodel_additional")]
+    partial class addpartmodel_additional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -785,55 +787,6 @@ namespace WebApi.Migrations.SqliteMigrations
                     b.HasKey("id");
 
                     b.ToTable("part_model_file");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.part_model_link", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("link")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("link_type")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("part_model_id")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("id");
-
-                    b.ToTable("part_model_link");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.part_type", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("created_by")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("dt_created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("dt_modified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("modified_by")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("id");
-
-                    b.ToTable("part_type");
                 });
 
             modelBuilder.Entity("WebApi.Entities.period", b =>

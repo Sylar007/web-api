@@ -32,6 +32,7 @@ namespace WebApi.Controllers
 		[Route("/PartField/CreatePartField")]
 		public bool CreatePartField([FromBody]part_field partField)
 		{
+			partField.field_type = "Spec";
 			bool createOperation = _partFieldService.CreatePartField(partField);
 			return createOperation;
 		}
@@ -40,6 +41,7 @@ namespace WebApi.Controllers
 		[Route("/PartField/UpdatePartField")]
 		public bool UpdatePartField(part_field partfield)
 		{
+			partfield.field_type = "Spec";
 			bool updateOperation = _partFieldService.UpdatePartField(partfield);
 			return updateOperation;
 		}

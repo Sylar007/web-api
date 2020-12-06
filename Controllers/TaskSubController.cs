@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WebApi.Models.Tasks;
 using WebApi.Services;
 
@@ -28,7 +29,11 @@ namespace WebApi.Controllers
 		public string GetTaskSubTree([FromBody]TaskSubModel model)
 		{
 			dynamic val = _tasksubService.GetTaskSubTree(model.woid, model.equipmentid, model.wotypeid);
-			return JsonConvert.SerializeObject(val);
+			var settings = new JsonSerializerSettings
+			{
+				ContractResolver = new DefaultContractResolver { NamingStrategy = new LowercaseNamingStrategy() },
+			};
+			return JsonConvert.SerializeObject(val, settings);
 		}
 	}
 }

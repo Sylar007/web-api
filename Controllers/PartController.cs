@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using WebApi.Services;
 using WebApi.Entities;
 using Newtonsoft.Json;
+using System.Linq;
+using WebApi.Models.Part;
 
 namespace WebApi.Controllers
 {
@@ -44,74 +46,85 @@ namespace WebApi.Controllers
 			object part = _partService.GetPartById(id);
 			return JsonConvert.SerializeObject(part);
 		}
-		
 
-		//[HttpPost]
-		//[Route("/Equipment/GetEquipmentById/{id}")]
-		//public string GetEquipmentById(int id)
-		//{
-		//	dynamic equipmentById = _equipmentService.GetEquipmentById(id);
-		//	dynamic val = JsonConvert.SerializeObject(equipmentById);
-		//	return val;
-		//}
+		[HttpPost]
+		[Route("/Part/UpdatePart")]
+		public int UpdatePart([FromBody] PartModel model)
+		{
+			part part = new part();
+			if (!string.IsNullOrWhiteSpace(model.acquisition_date))
+			{
+				part.dt_acquisition = Convert.ToDateTime(model.acquisition_date);
+			}
+			if (!string.IsNullOrWhiteSpace(model.warranty_date))
+			{
+				part.dt_warranty_exp = Convert.ToDateTime(model.warranty_date);
+			}
+			if (!string.IsNullOrWhiteSpace(model.installation_date))
+			{
+				part.dt_installation = Convert.ToDateTime(model.installation_date);
+			}
+			if (!string.IsNullOrWhiteSpace(model.certificate_date))
+			{
+				part.dt_cert = Convert.ToDateTime(model.certificate_date);
+			}
+     		part.mfg_year = model.mfg_year;			
+			part.id = model.id;
+			part.cert_no = model.certificate_no;
+			part.serial_no = model.serial_no;
+			part.remark = model.remarks;
+			part.sales_contact_name = model.sales_contact_name;
+			part.sales_contact_no = model.sales_contact_no;
+			part.support_contact_name = model.support_contact_name;
+			part.support_contact_no = model.support_contact_no;
+			part.dt_modified = DateTime.Now;
+			int idClaim = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase)).Value);
+			part.modified_by = idClaim;
+			return _partService.EditPart(part);
+		}
 
-		//[HttpPost]
-		//[Route("Equipment/GetEquipmentBySerialNo")]
-		//public string GetEquipmentBySerialNo([FromBody] equipment equipment)
-		//{
-		//	equipment equipmentBySerialNo = _equipmentService.GetEquipmentBySerialNo(equipment);
-		//	return JsonConvert.SerializeObject(equipmentBySerialNo);
-		//}
+		[HttpPost]
+		[Route("/Part/AddPart")]
+		public int AddPart([FromBody] PartModel model)
+		{
+			part part = new part();
+			if (!string.IsNullOrWhiteSpace(model.acquisition_date))
+			{
+				part.dt_acquisition = Convert.ToDateTime(model.acquisition_date);
+			}
+			if (!string.IsNullOrWhiteSpace(model.warranty_date))
+			{
+				part.dt_warranty_exp = Convert.ToDateTime(model.warranty_date);
+			}
+			if (!string.IsNullOrWhiteSpace(model.installation_date))
+			{
+				part.dt_installation = Convert.ToDateTime(model.installation_date);
+			}
+			if (!string.IsNullOrWhiteSpace(model.certificate_date))
+			{
+				part.dt_cert = Convert.ToDateTime(model.certificate_date);
+			}
+			part.mfg_year = model.mfg_year;
+			part.part_model_id = model.model_id;
+			part.cert_no = model.certificate_no;
+			part.serial_no = model.serial_no;
+			part.remark = model.remarks;
+			part.sales_contact_name = model.sales_contact_name;
+			part.sales_contact_no = model.sales_contact_no;
+			part.support_contact_name = model.support_contact_name;
+			part.support_contact_no = model.support_contact_no;
+			part.dt_created = DateTime.Now;
+			int idClaim = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type.Equals("assigned_User_Id", StringComparison.InvariantCultureIgnoreCase)).Value);
+			part.created_by = idClaim;
+			return _partService.AddPart(part);
+		}
 
-		//[HttpPost]
-		//[Route("Equipment/GetEquipmentByNo")]
-		//public string GetEquipmentByNo([FromBody] equipment equipment)
-		//{
-		//	equipment equipmentByNo = _equipmentService.GetEquipmentByNo(equipment);
-		//	return JsonConvert.SerializeObject(equipmentByNo);
-		//}
-
-		//[Route("Equipment/GetEquipmentRepairReplaceById/{id}")]
-		//public string GetEquipmentRepairReplaceById(int id)
-		//{
-		//	dynamic equipmentRepairReplaceById = _equipmentService.GetEquipmentRepairReplaceById(id);
-		//	dynamic val = JsonConvert.SerializeObject(equipmentRepairReplaceById);
-		//	return val;
-		//}
-
-		//[HttpPost]
-		//[Route("Equipment/AddEquipment")]
-		//public int AddEquipment([FromBody] equipment equipment)
-		//{
-		//	equipment.is_deleted = 0;
-		//	equipment.dt_created = DateTime.Now;
-		//	//equipment.created_by = _userService.GetLoggedInUserId(base.Request);
-		//	return _equipmentService.AddEquipment(equipment);
-		//}
-
-		//[HttpPost]
-		//[Route("Equipment/EditEquipment")]
-		//public int EditEquipment([FromBody] equipment equipment)
-		//{
-		//	equipment.dt_modified = DateTime.Now;
-		//	//equipment.modified_by = UserService.GetLoggedInUserId(base.Request);
-		//	return _equipmentService.EditEquipment(equipment);
-		//}
-
-		//[HttpPost]
-		//[Route("Equipment/GetHomeTotalEqLocationChart")]
-		//public string GetHomeTotalEquipmentLocationChart()
-		//{
-		//	IEnumerable<object> homeTotalEqLocationChart = _equipmentService.GetHomeTotalEqLocationChart();
-		//	return JsonConvert.SerializeObject(homeTotalEqLocationChart);
-		//}
-
-		//[HttpPost]
-		//[Route("Equipment/GetHomeTotalEqProcessChart")]
-		//public string GetHomeTotalEquipmentProcessChart()
-		//{
-		//	IEnumerable<object> homeTotalEqProcessChart = _equipmentService.GetHomeTotalEqProcessChart();
-		//	return JsonConvert.SerializeObject(homeTotalEqProcessChart);
-		//}
+		[HttpGet]
+		[Route("/Part/GetPartModelSelection")]
+		public string GetPartModelSelection()
+		{
+			IEnumerable<object> partModelSelectionList = _partService.GetPartModelSelection();
+			return JsonConvert.SerializeObject(partModelSelectionList);
+		}
 	}
 }

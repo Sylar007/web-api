@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Entities;
 using WebApi.Helpers;
+using WebApi.Models.WorkOrder;
 
 namespace WebApi.Services
 {
@@ -302,6 +303,34 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public bool EditSubTaskTree(int woid, List<EventModel> model)
+        {
+            try
+            {
+                List<wo_task_sub> list = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid).ToList();
+                foreach (wo_task_sub item in list)
+                {
+                    _context.wo_task_sub.Remove(item);
+                    _context.SaveChanges();
+                }
+
+                foreach (var data in model)
+                {
+                    wo_task_sub wo_task_sub = new wo_task_sub();
+                    wo_task_sub.task_sub_id = Convert.ToInt32(data.id);
+                    wo_task_sub.wo_id = woid;
+                    wo_task_sub entity = wo_task_sub;
+                    _context.wo_task_sub.Add(entity);
+                    _context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }
