@@ -31,6 +31,7 @@ namespace WebApi.Services
                              }).ToList();
 
                 IList<TaskSubs> tasksubs = new List<TaskSubs>();
+                int i = 0;
                 foreach (var parent in query)
                 {
                     TaskSubs tasksub = new TaskSubs();
@@ -43,6 +44,7 @@ namespace WebApi.Services
                                       subtaskName = ts.name,
                                       task_sub_id = ts.id
                                   }).ToList();
+                    
                     foreach (var children in query2)
                     {
                         //mda: cross check if the Work Order already exist in other Work Order
@@ -71,7 +73,8 @@ namespace WebApi.Services
                             //onclick = "window.open('WOExUpload?type=WOExPre&tasksubid=158&woid=150', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false"
                             //subtasksingleValue.url = "&emsp;<button type='button' data-toggle='modal' onclick='this.modalSubTaskFile.show()'>Before (0)</button>";
                             //subtasksingleValue.url = "&emsp;<a role='button' style='cursor: pointer; color: blue' data-toggle='modal' 'aria-hidden='true' onclick='window.open('/workorder/workordersubtaskfile;wo_id=6', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false'>Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
-                            subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=1' style='cursor: pointer; color: blue' target = '_blank' >Before</a> ("+ getBeforeFiles +") | <a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=2' style='cursor: pointer; color: blue' target = '_blank' >After</a> (" + getAfterFiles + ")";
+                            //subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=1' style='cursor: pointer; color: blue' target = '_blank' >Before</a> ("+ getBeforeFiles +") | <a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=2' style='cursor: pointer; color: blue' target = '_blank' >After</a> (" + getAfterFiles + ")";
+                            subtasksingleValue.url = "&emsp;<a role='button' id='btnBefore" + i + "' style='cursor: pointer; color: blue' aria-hidden='true' title='" + woid + "," + children.task_sub_id + ",1' (click) = 'openDialog()'>Before</a> (" + getBeforeFiles + ") | <a role='button' id='btnAfter" + i + "' style='cursor: pointer; color: blue' aria-hidden='true' title='" + woid + "," + children.task_sub_id + ",2' (click) = 'openDialog()'>After</a> (" + getAfterFiles + ")";
 
                             //subtasksingleValue.url = "&emsp;<a style='cursor: pointer; color: blue' onclick='window.open('workorder/workordersubtaskfile;wo_id=6', 'child', 'height=600,width=1506,directories=no,left=518,scrollbars'); return false' target = '_blank' >Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
                             //subtasksingleValue.url= "&emsp;<a href = 'http://www.yahoo.com' target = '_blank'>Before</a> (0) | <a href = 'http://www.yahoo.com' target = '_blank'>After</a> (0)";
@@ -90,10 +93,8 @@ namespace WebApi.Services
                                 value subtasksingleValue = new value();
                                 subtasksingleValue.id = children.id.ToString();
                                 int getBeforeFiles = GetBeforeFiles(woid, children.task_sub_id).Count();
-                                int getAfterFiles = GetAfterFiles(woid, children.task_sub_id).Count();
-
-                                subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=1' style='cursor: pointer; color: blue' target = '_blank' >Before</a> (" + getBeforeFiles + ") | <a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=2' style='cursor: pointer; color: blue' target = '_blank' >After</a> (" + getAfterFiles + ")";
-
+                                int getAfterFiles = GetAfterFiles(woid, children.task_sub_id).Count();                                
+                                subtasksingleValue.url = "&emsp;<a role='button' id='btnBefore"+ i + "' style='cursor: pointer; color: blue' aria-hidden='true' title='" + woid + "," + children.task_sub_id + ",1' (click) = 'openDialog()'>Before</a> (" + getBeforeFiles + ") | <a role='button' id='btnAfter" + i + "' style='cursor: pointer; color: blue' aria-hidden='true' title='" + woid + "," + children.task_sub_id + ",2' (click) = 'openDialog()'>After</a> (" + getAfterFiles + ")";
                                 values.Add(subtasksingleValue);
                                 subtasksingle.value = values;
                             }
@@ -106,14 +107,15 @@ namespace WebApi.Services
                                 subtasksingleValue.id = children.id.ToString();
                                 int getBeforeFiles = GetBeforeFiles(woid, children.task_sub_id).Count();
                                 int getAfterFiles = GetAfterFiles(woid, children.task_sub_id).Count();
+                                subtasksingleValue.url = "&emsp;<a role='button' id='btnBefore" + i + "' style='cursor: pointer; color: blue' aria-hidden='true' title='" + woid + "," + children.task_sub_id + ",1' (click) = 'openDialog()'>Before</a> (" + getBeforeFiles + ") | <a role='button' id='btnAfter" + i + "' style='cursor: pointer; color: blue' aria-hidden='true' title='" + woid + "," + children.task_sub_id + ",2' (click) = 'openDialog()'>After</a> (" + getAfterFiles + ")";
 
-                                subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=1' style='cursor: pointer; color: blue' target = '_blank' >Before</a> (" + getBeforeFiles + ") | <a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=2' style='cursor: pointer; color: blue' target = '_blank' >After</a> (" + getAfterFiles + ")";
+                                //subtasksingleValue.url = "&emsp;<a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=1' style='cursor: pointer; color: blue' target = '_blank' >Before</a> (" + getBeforeFiles + ") | <a href = 'workorder/workordersubtaskfile;wo_id=" + woid + ";task_sub_id=" + children.task_sub_id + ";upload_type=2' style='cursor: pointer; color: blue' target = '_blank' >After</a> (" + getAfterFiles + ")";
 
                                 values.Add(subtasksingleValue);
                                 subtasksingle.value = values;
                             }                           
                         }
-                        childrens.Add(subtasksingle);
+                        childrens.Add(subtasksingle);                        
                     }
                     tasksub.value = parent.taskId.ToString();
                     tasksub.text = parent.taskName;
@@ -121,6 +123,7 @@ namespace WebApi.Services
                     tasksub.disabled = false;
                     tasksub.children = childrens;
                     tasksubs.Add(tasksub);
+                    i++;
                 }
                 return tasksubs;
             }
