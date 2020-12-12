@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Services;
 
@@ -26,9 +27,8 @@ namespace WebApi.Controllers
 		{
 			_equipmentModelFieldService = equipmentModelFieldService;
 		}
-		[HttpPost]
 		[HttpGet]
-		[Route("EquipmentModelField/GetEquipmentModelFieldList/{equipmentModelId}")]
+		[Route("/EquipmentModelField/GetEquipmentModelFieldList/{equipmentModelId}")]
 		public string GetEquipmentModelFieldList(int equipmentModelId)
 		{
 			IEnumerable<object> equipmentModelFieldList = _equipmentModelFieldService.GetEquipmentModelFieldList(equipmentModelId, "Spec");
@@ -36,14 +36,30 @@ namespace WebApi.Controllers
 		}
 
 		[HttpPost]
-		[Route("EquipmentModelField/EditEquipmentModelField")]
-		public bool EditEquipmentModelField(dynamic jsonData)
+		[Route("/EquipmentModelField/CreateEquipmentModelField")]
+		public bool CreateEquipmentModelField([FromBody]equipment_model_field equipmentmodelField)
 		{
-			dynamic val = Convert.ToInt32(jsonData.id);
-			dynamic val2 = Convert.ToString(jsonData.fieldType);
-			dynamic val3 = jsonData.fieldList.ToObject<List<object>>();
-			dynamic val4 = _equipmentModelFieldService.EditEquipmentModelField(val, val3, val2);
-			return val4;
+			equipmentmodelField.field_type = "Spec";
+			bool createOperation = _equipmentModelFieldService.CreateEquipmentModelField(equipmentmodelField);
+			return createOperation;
+		}
+
+		[HttpPut]
+		[Route("/EquipmentModelField/UpdateEquipmentModelField")]
+		public bool UpdatePartModelField(equipment_model_field equipmentmodelField)
+		{
+			equipmentmodelField.field_type = "Spec";
+			bool updateOperation = _equipmentModelFieldService.UpdateEquipmentModelField(equipmentmodelField);
+			return updateOperation;
+		}
+
+		[HttpDelete]
+		[Route("/EquipmentModelField/DeleteEquipmentModelField/{id}")]
+		public bool DeleteEquipmentModelField(int id)
+		{
+
+			bool deleteOperation = _equipmentModelFieldService.DeleteEquipmentModelField(id);
+			return deleteOperation;
 		}
 	}
 }

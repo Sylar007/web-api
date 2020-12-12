@@ -11,11 +11,13 @@ namespace WebApi.Services
     {
         dynamic GetWorkOrderByWorkOrderNo(string workorderNo);
         IEnumerable<dynamic> GetPartByWorkOrderNo(string workorderNo);
+        IEnumerable<dynamic> GetPartByWorkId(int id);
         dynamic GetEditWorkOrderByWorkOrderNo(string workorderNo);
         IEnumerable<dynamic> GetWorkOrderList();
         IEnumerable<dynamic> GetWorkOrderSelection();
         int AddWorkOrder(work_order work_order);
         int EditWorkOrder(work_order data);
         bool EditSubTaskTree(int woid, List<EventModel> model);
+        bool EditSubTaskExecutionTree(int woid, List<EventModel> model);
     }
 }

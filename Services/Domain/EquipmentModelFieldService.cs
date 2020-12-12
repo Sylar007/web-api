@@ -59,5 +59,45 @@ namespace WebApi.Services
                 throw ex;
             }
         }
+        public bool CreateEquipmentModelField(equipment_model_field equipmentmodel_fieldParam)
+        {
+            try
+            {
+                _context.equipment_model_field.Add(equipmentmodel_fieldParam);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool UpdateEquipmentModelField(equipment_model_field equipmentmodel_fieldParam)
+        {
+            try
+            {
+                _context.equipment_model_field.Update(equipmentmodel_fieldParam);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool DeleteEquipmentModelField(int id)
+        {
+            try
+            {
+                equipment_model_field equipmentToDelete = _context.equipment_model_field.Where((equipment_model_field ef) => ef.id == id).FirstOrDefault();
+                _context.equipment_model_field.Remove(equipmentToDelete);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

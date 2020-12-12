@@ -125,6 +125,35 @@ namespace WebApi.Services
             }
         }
 
+        public IEnumerable<dynamic> GetPartByWorkId(int id)
+        {
+            try
+            {
+                return (from workorder in _context.work_order
+                        join equipment in _context.equipments on workorder.equipment_id equals equipment.id
+                        join workorder_part in _context.wo_part on workorder.id equals workorder_part.wo_id
+                        join part in _context.parts on workorder_part.part_id equals part.id
+                        join part_models in _context.part_model on part.part_model_id equals part_models.id
+                        join User in _context.Users on workorder.assignee_user_id equals User.Id
+                        where workorder.id == id
+                        select new
+                        {
+                            id = workorder.id,
+                            equipment_id = equipment.id,
+                            part_id = workorder_part.part_id,
+                            model_no = part_models.model_no,
+                            model_name = part_models.model_name,
+                            part_name = part_models.name,
+                            part_code = part_models.code,
+                            serial_no = part.serial_no
+                        }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<dynamic> GetWorkOrderList()
         {
             try
@@ -310,7 +339,7 @@ namespace WebApi.Services
         {
             try
             {
-                List<wo_task_sub> list = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid).ToList();
+                List<wo_task_sub> list = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid && wtc.wo_task_type == null).ToList();
                 foreach (wo_task_sub item in list)
                 {
                     _context.wo_task_sub.Remove(item);
@@ -319,12 +348,40 @@ namespace WebApi.Services
 
                 foreach (var data in model)
                 {
-                    wo_task_sub wo_task_sub = new wo_task_sub();
-                    wo_task_sub.task_sub_id = Convert.ToInt32(data.id);
-                    wo_task_sub.wo_id = woid;
-                    wo_task_sub entity = wo_task_sub;
-                    _context.wo_task_sub.Add(entity);
-                    _context.SaveChanges();
+                    int vTask_Sub_Id = list.Where(x => x.task_sub_id == Convert.ToInt32(data.id)).Select(x => x.task_sub_id).FirstOrDefault();
+                    if (vTask_Sub_Id > 0)
+                    {
+                        wo_task_sub wo_task_sub = new wo_task_sub();
+                        wo_task_sub.task_sub_id = Convert.ToInt32(data.id);
+                        wo_task_sub.wo_id = woid;
+                        wo_task_sub entity = wo_task_sub;
+                        _context.wo_task_sub.Add(entity);
+                        _context.SaveChanges();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool EditSubTaskExecutionTree(int woid, List<EventModel> model)
+        {
+            try
+            {
+                List<wo_task_sub> list = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid && wtc.wo_task_type == null).ToList();
+                foreach (wo_task_sub wo_task_subsingle in list)
+                {
+                    string vTask_Sub_Id = model.Where(x => x.id == wo_task_subsingle.task_sub_id.ToString()).Select(x=> x.id).FirstOrDefault();
+                    if (!String.IsNullOrEmpty(vTask_Sub_Id))
+                    {                        
+                        wo_task_subsingle.wo_task_type = "WOEx";
+                        wo_task_sub entity = wo_task_subsingle;
+                        _context.wo_task_sub.Update(entity);
+                        _context.SaveChanges();
+                    }
                 }
                 return true;
             }

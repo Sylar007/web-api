@@ -108,6 +108,10 @@ namespace WebApi
             services.AddScoped<IPartTypeService, PartTypeService>();
             services.AddScoped<IEquipmentTypeService, EquipmentTypeService>();
             services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IWOStatusService, WOStatusService>();
+            services.AddScoped<IWOExecutionService, WOExecutionService>();
+            services.AddScoped<IEquipmentModelPartService, EquipmentModelPartService>();
             
         }
 

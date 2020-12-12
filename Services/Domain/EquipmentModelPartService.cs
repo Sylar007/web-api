@@ -23,20 +23,15 @@ namespace WebApi.Services
 				{
 					return new List<equipment_model_part>();
 				}
-				return (from p in _context.parts
-						join pm in _context.part_model on p.part_model_id equals pm.id into pmJoin
-						from pmj in pmJoin.DefaultIfEmpty()
-						join e in _context.equipment_model_part_model on pmj.id equals e.part_model_id into eJoin
-						from ej in eJoin.DefaultIfEmpty()
-						where ej.equipment_model_id == equipmentModelId
+				return (from pm in _context.part_model
+						join p in _context.parts on pm.id equals p.part_model_id
+						join e in _context.equipment_model_part_model on pm.id equals e.part_model_id 
+						where e.equipment_model_id == equipmentModelId
 						select new
 						{
 							id = p.id,
-							model_no = ((pmj != null) ? pmj.model_no : ""),
-							model_name = ((pmj != null) ? pmj.model_name : ""),
-							part_name = ((pmj != null) ? pmj.name : ""),
-							part_code = ((pmj != null) ? pmj.code : ""),
-							serial_no = p.serial_no
+							part_name = ((pm != null) ? pm.name : ""),
+							part_code = ((pm != null) ? pm.code : "")
 						}).ToList();
 			}
 			catch (Exception ex)

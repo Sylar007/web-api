@@ -53,6 +53,14 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("/WorkOrder/GetPartByWorkId/{id}")]
+        public string GetPartByWorkOrderNo(int id)
+        {
+            object part = _workorderService.GetPartByWorkId(id);
+            return JsonConvert.SerializeObject(part);
+        }
+
+        [HttpGet]
         [Route("/WorkOrder/GetWorkOrderList")]
         public string GetWorkOrderList()
         {
@@ -142,6 +150,21 @@ namespace WebApi.Controllers
                 //work_order.remarks = model.remarks;
                 
                 return _workorderService.EditSubTaskTree(woid, model); ;
+            }
+            catch (Exception ex)
+            {
+                // return error message if there was an exception
+                return false;
+            }
+        }
+
+        [HttpPost]
+        [Route("/WorkOrder/UpdateTaskExecutionSubTree/{woid}")]
+        public bool UpdateTaskExecutionSubTree(int woid, [FromBody]List<EventModel> model)
+        {
+            try
+            {
+                return _workorderService.EditSubTaskExecutionTree(woid, model); ;
             }
             catch (Exception ex)
             {

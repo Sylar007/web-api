@@ -22,12 +22,11 @@ namespace WebApi.Controllers
 		{
 			_equipmentModelPartService = equipmentModelPartService;
 		}
-		[HttpPost]
 		[HttpGet]
-		[Route("EquipmentModelPart/GetEquipmentModelPartList/{equipmentModelId}")]
-		public string GetEquipmentModelPartList(int equipmentModelId)
+		[Route("/EquipmentModelPart/GetEquipmentModelPartList/{id}")]
+		public string GetEquipmentModelPartList(int id)
 		{
-			IEnumerable<object> equipmentModelPartList = _equipmentModelPartService.GetEquipmentModelPartList(equipmentModelId);
+			IEnumerable<object> equipmentModelPartList = _equipmentModelPartService.GetEquipmentModelPartList(id);
 			return JsonConvert.SerializeObject(equipmentModelPartList);
 		}
 

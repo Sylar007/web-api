@@ -59,11 +59,10 @@ namespace WebApi.Services
 						select new
 						{
 							id = em.id,
-							equipment_name = em.name,
-							process_name = em.process_name,
-							mfg_name = em.mfg_name,
-							model_name = em.model_name,
-							equipment_model_full_name = string.Concat(em.name + " / ", em.model_name)
+							equipmentName = em.name,
+							processName = em.process_name,
+							manufacturer = em.mfg_name,
+							modelName = em.model_name
 						}).ToList();
 			}
 			catch (Exception ex)
@@ -104,19 +103,19 @@ namespace WebApi.Services
 						where em.id == id
 						select new
 						{
-							id = em.id,
-							name = em.name,
-							equipment_type_id = em.equipment_type_id,
-							process_name = em.process_name,
-							model_name = em.model_name,
-							model_no = em.model_no,
-							mfg_name = em.mfg_name,
+							id = em.id,							
+							equipmentName = em.name,
+							equipmentTypeId = ej.id,
+							equipmentType = ((ej != null) ? ej.name : ""),
+							processName = em.process_name,
+							modelName = em.model_name,
+							modelNo = em.model_no,
+							manufacturer = em.mfg_name,
 							sales_contact_name = em.sales_contact_name,
 							sales_contact_no = em.sales_contact_no,
 							support_contact_name = em.support_contact_name,
 							support_contact_no = em.support_contact_no,
-							remark = em.remark,
-							equipment_type_name = ((ej != null) ? ej.name : "")
+							remarks = em.remark
 						}).First();
 			}
 			catch (Exception ex)
@@ -151,7 +150,7 @@ namespace WebApi.Services
 				equipment_model.name = data.name;
 				equipment_model.equipment_type_id = data.equipment_type_id;
 				equipment_model.process_name = data.process_name;
-				equipment_model.model_name = data.model_name;
+				//equipment_model.model_name = data.model_name;
 				equipment_model.model_no = data.model_no;
 				equipment_model.mfg_name = data.mfg_name;
 				equipment_model.sales_contact_name = data.sales_contact_name;
@@ -173,7 +172,20 @@ namespace WebApi.Services
 			}
 			return data.id;
 		}
-
+		public bool DeleteEquipmentModelField(int id)
+		{
+			try
+			{
+				part_model_field partToDelete = _context.part_model_field.Where((part_model_field ef) => ef.id == id).FirstOrDefault();
+				_context.part_model_field.Remove(partToDelete);
+				_context.SaveChanges();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
 		public IEnumerable<dynamic> GetTotalEquipmentModel()
 		{
 			try
