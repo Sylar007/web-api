@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
 namespace WebApi.Migrations.SqliteMigrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    partial class SqliteDataContextModelSnapshot : ModelSnapshot
+    [Migration("20201214172633_frequency_table")]
+    partial class frequency_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -562,14 +564,11 @@ namespace WebApi.Migrations.SqliteMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("frequency")
+                    b.Property<int>("notification")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("frequencyType")
+                    b.Property<int>("notificationType")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("remindBeforeAfter")
                         .HasColumnType("INTEGER");
@@ -1383,9 +1382,6 @@ namespace WebApi.Migrations.SqliteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("modified_by")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("notification_id")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("reason_rejected")

@@ -112,6 +112,7 @@ namespace WebApi
             services.AddScoped<IWOStatusService, WOStatusService>();
             services.AddScoped<IWOExecutionService, WOExecutionService>();
             services.AddScoped<IEquipmentModelPartService, EquipmentModelPartService>();
+            services.AddScoped<INotificationService, NotificationService>();
             
         }
 

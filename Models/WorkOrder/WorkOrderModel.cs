@@ -21,6 +21,8 @@ namespace WebApi.Models.WorkOrder
         [Required]
         public int wo_priority_id { get; set; }
         [Required]
+        public int notification_id { get; set; }
+        [Required]
         public string dt_start_planned { get; set; }
         [Required]
         public string dt_end_planned { get; set; }

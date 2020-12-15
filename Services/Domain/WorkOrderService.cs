@@ -31,6 +31,8 @@ namespace WebApi.Services
                         from freqPeriod in periods.DefaultIfEmpty()
                         join periodRemind in _context.period on workorder.reminder_period_id equals periodRemind.id into rPeriods
                         from reminderPeriod in rPeriods.DefaultIfEmpty()
+                        join notification in _context.notification_setting on workorder.notification_id equals notification.id into rNotifications
+                        from Notifications in rNotifications.DefaultIfEmpty()
                         where workorder.wo_no == workorderNo
                         select new
                         {
@@ -46,6 +48,7 @@ namespace WebApi.Services
                             action_taken = workorder.action_taken,
                             assign_to = User.FirstName,
                             status = wo_status.name,
+                            notification_name = Notifications.name,
                             equipment_name = equipment_model.name,
                             remarks = workorder.remarks,
                             frequency = freqPeriod.name,
@@ -74,6 +77,7 @@ namespace WebApi.Services
                         join equipment_model in _context.equipment_model on equipment.equipment_model_id equals equipment_model.id
                         join wo_status in _context.wo_status on workorder.wo_status_id equals wo_status.id
                         join User in _context.Users on workorder.assignee_user_id equals User.Id
+                        join notification in _context.notification_setting on workorder.notification_id equals notification.id
                         where workorder.wo_no == workorderNo
                         select new
                         {
@@ -82,13 +86,14 @@ namespace WebApi.Services
                             wo_type_id = wo_type.id,
                             equipment_id = equipment.id,
                             asignee_user_id = User.Id,
+                            notification_id = notification.id,
                             wo_priority_id = workorder.wo_priority_id,
                             remarks = workorder.remarks,
                             dt_start_planned = workorder.dt_start_planned.ToString("yyyy-MM-dd"),
                             dt_end_planned = workorder.dt_end_planned.ToString("yyyy-MM-dd"),
                             timeFrom = workorder.dt_start_planned.ToString("HH:mm"),
                             timeTo = workorder.dt_end_planned.ToString("HH:mm")
-            }).First();
+                        }).First();
             }
             catch (Exception ex)
             {
@@ -188,7 +193,7 @@ namespace WebApi.Services
         {
             try
             {
-                return (from wt in _context.wo_type                        
+                return (from wt in _context.wo_type
                         orderby wt.name
                         select new
                         {
@@ -296,7 +301,7 @@ namespace WebApi.Services
                 }
             }
             catch (Exception ex)
-            {                
+            {
                 throw;
             }
             return -1;
@@ -310,6 +315,7 @@ namespace WebApi.Services
                 work_order.wo_name = data.wo_name;
                 work_order.wo_type_id = data.wo_type_id;
                 work_order.assignee_user_id = data.assignee_user_id;
+                work_order.notification_id = data.notification_id;
                 work_order.equipment_id = data.equipment_id;
                 work_order.freq_total = data.freq_total;
                 work_order.freq_period_id = data.freq_period_id;
@@ -340,6 +346,7 @@ namespace WebApi.Services
             try
             {
                 List<wo_task_sub> list = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid && wtc.wo_task_type == null).ToList();
+                List<wo_task_sub> listExecution = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid && wtc.wo_task_type != null).ToList();
                 foreach (wo_task_sub item in list)
                 {
                     _context.wo_task_sub.Remove(item);
@@ -348,8 +355,8 @@ namespace WebApi.Services
 
                 foreach (var data in model)
                 {
-                    int vTask_Sub_Id = list.Where(x => x.task_sub_id == Convert.ToInt32(data.id)).Select(x => x.task_sub_id).FirstOrDefault();
-                    if (vTask_Sub_Id > 0)
+                    var itemExisted = listExecution.Where(x => x.task_sub_id == Convert.ToInt32(data.id)).FirstOrDefault();
+                    if (itemExisted == null)
                     {
                         wo_task_sub wo_task_sub = new wo_task_sub();
                         wo_task_sub.task_sub_id = Convert.ToInt32(data.id);
@@ -374,9 +381,9 @@ namespace WebApi.Services
                 List<wo_task_sub> list = _context.wo_task_sub.Where((wo_task_sub wtc) => wtc.wo_id == woid && wtc.wo_task_type == null).ToList();
                 foreach (wo_task_sub wo_task_subsingle in list)
                 {
-                    string vTask_Sub_Id = model.Where(x => x.id == wo_task_subsingle.task_sub_id.ToString()).Select(x=> x.id).FirstOrDefault();
+                    string vTask_Sub_Id = model.Where(x => x.id == wo_task_subsingle.task_sub_id.ToString()).Select(x => x.id).FirstOrDefault();
                     if (!String.IsNullOrEmpty(vTask_Sub_Id))
-                    {                        
+                    {
                         wo_task_subsingle.wo_task_type = "WOEx";
                         wo_task_sub entity = wo_task_subsingle;
                         _context.wo_task_sub.Update(entity);

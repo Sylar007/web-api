@@ -35,7 +35,10 @@ namespace WebApi.Helpers
         public virtual DbSet<equipment_status> equipment_status { get; set; }
         public virtual DbSet<equipment_type> equipment_type { get; set; }
         public virtual DbSet<estimated_nav> estimated_nav { get; set; }
+        public virtual DbSet<frequency_type> frequency_type { get; set; }
         public virtual DbSet<media> media { get; set; }
+        public virtual DbSet<notification_setting> notification_setting { get; set; }
+        public virtual DbSet<notification_type> notification_type { get; set; }
         public virtual DbSet<part> parts { get; set; }
         public virtual DbSet<part_field> part_field { get; set; }
         public virtual DbSet<part_file> part_file { get; set; }
@@ -47,6 +50,7 @@ namespace WebApi.Helpers
         public virtual DbSet<part_model_file> part_model_file { get; set; }        
         public virtual DbSet<policy> policies { get; set; }
         public virtual DbSet<qrcode_link> qrcode_link { get; set; }
+        public virtual DbSet<reminder_type> reminder_type { get; set; }
         public virtual DbSet<task> task { get; set; }
         public virtual DbSet<task_check> task_check { get; set; }
         public virtual DbSet<task_sub> task_sub { get; set; }

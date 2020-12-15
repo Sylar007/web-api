@@ -85,6 +85,7 @@ namespace WebApi.Controllers
                 // create work order
                 work_order work_order = new work_order();
                 work_order.assignee_user_id = model.asignee_user_id;
+                work_order.notification_id = model.notification_id;                
                 work_order.wo_type_id = model.wo_type_id;
                 work_order.equipment_id = model.equipment_id;
                 work_order.wo_name = model.wo_name;
@@ -113,6 +114,7 @@ namespace WebApi.Controllers
                 work_order work_order = new work_order();
                 work_order.id = model.id;
                 work_order.assignee_user_id = model.asignee_user_id;
+                work_order.notification_id = model.notification_id;
                 work_order.wo_type_id = model.wo_type_id;
                 work_order.equipment_id = model.equipment_id;
                 work_order.wo_name = model.wo_name;

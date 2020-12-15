@@ -26,6 +26,7 @@ namespace WebApi.Entities
         public int wo_priority_id { get; set; }
         public int freq_period_id { get; set; }
         public int freq_total { get; set; }
+        public Nullable<int> notification_id { get; set; }
         public int reminder_total { get; set; }
         public int reminder_period_id { get; set; }
         public System.DateTime dt_start_planned { get; set; }

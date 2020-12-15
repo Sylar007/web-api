@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
 namespace WebApi.Migrations.SqliteMigrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    partial class SqliteDataContextModelSnapshot : ModelSnapshot
+    [Migration("20201214164159_notificationtableslatest")]
+    partial class notificationtableslatest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -519,23 +521,6 @@ namespace WebApi.Migrations.SqliteMigrations
                     b.ToTable("estimated_nav");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.frequency_type", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("id");
-
-                    b.ToTable("frequency_type");
-                });
-
             modelBuilder.Entity("WebApi.Entities.media", b =>
                 {
                     b.Property<int>("id")
@@ -562,14 +547,11 @@ namespace WebApi.Migrations.SqliteMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("frequency")
+                    b.Property<int>("notification")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("frequencyType")
+                    b.Property<int>("notificationType")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("remindBeforeAfter")
                         .HasColumnType("INTEGER");
@@ -1383,9 +1365,6 @@ namespace WebApi.Migrations.SqliteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("modified_by")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("notification_id")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("reason_rejected")
