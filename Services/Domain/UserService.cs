@@ -81,7 +81,7 @@ namespace WebApi.Services
 
                 user.Username = userParam.Username;
             }
-
+            user.Email = userParam.Email;
             // update user properties if provided
             if (!string.IsNullOrWhiteSpace(userParam.FirstName))
                 user.FirstName = userParam.FirstName;

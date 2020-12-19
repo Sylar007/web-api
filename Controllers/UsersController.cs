@@ -108,7 +108,8 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost]
+        [Route("/Users/Update/{id}")]
         public IActionResult Update(int id, [FromBody]UpdateModel model)
         {
             // map model to entity and set id
@@ -128,7 +129,8 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost]
+        [Route("/Users/Delete/{id}")]
         public IActionResult Delete(int id)
         {
             _userService.Delete(id);
