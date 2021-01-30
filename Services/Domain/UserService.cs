@@ -58,6 +58,8 @@ namespace WebApi.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+            user.Department = "Testing";
+            user.Role = "Executive";
 
             _context.Users.Add(user);
             _context.SaveChanges();
